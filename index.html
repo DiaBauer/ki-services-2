@@ -1,116 +1,549 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KI.service – KI‑Telefonagenten</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-body{background:#0a0f1c;color:white;font-family:Inter,system-ui}
-.glass{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(10px)}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>KI.service – KI-Agenten für Unternehmen</title>
+  <meta name="description" content="Chat-, Voice- und Wissens-Agenten für Unternehmen. KI.service verbindet moderne AI-Implementierung mit EU-Hosting, DSGVO-Fokus und klaren Demo-Optionen." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{
+      --bg:#040b1f;
+      --text:#f6f8ff;
+      --muted:rgba(233,239,255,.76);
+      --panelA:rgba(17,27,58,.78);
+      --panelB:rgba(9,18,42,.62);
+      --line:rgba(255,255,255,.09);
+      --cyan:#22d3ee;
+      --cyan2:#60a5fa;
+      --pink:#f472b6;
+      --btnGlow:linear-gradient(90deg,#1dcfff 0%,#6ea8ff 48%,#f39ec1 100%);
+      --soft:0 25px 80px rgba(0,0,0,.42);
+    }
+
+    html{scroll-behavior:smooth}
+    body{
+      background:
+        radial-gradient(900px 500px at 70% 18%, rgba(33,211,238,.11), transparent 52%),
+        radial-gradient(1100px 700px at 80% 72%, rgba(96,165,250,.10), transparent 46%),
+        radial-gradient(700px 600px at 8% 20%, rgba(7,72,143,.22), transparent 42%),
+        linear-gradient(180deg, #020818 0%, #030b1f 100%);
+      color:var(--text);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      overflow-x:hidden;
+    }
+    h1,h2,h3,.display{letter-spacing:-0.03em}
+    .panel{
+      background:linear-gradient(180deg,var(--panelA),var(--panelB));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--soft);
+      backdrop-filter: blur(10px);
+    }
+    .btn-primary,.btn-secondary{
+      position:relative;
+      overflow:hidden;
+      isolation:isolate;
+      transition:.25s ease;
+    }
+    .btn-primary{
+      background:var(--btnGlow);
+      color:white;
+      box-shadow:0 8px 30px rgba(34,211,238,.18);
+    }
+    .btn-secondary{
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.12);
+      color:white;
+    }
+    .btn-primary:before,.btn-secondary:before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      border-radius:9999px;
+      padding:1px;
+      background:linear-gradient(120deg, transparent 0%, rgba(255,255,255,.08) 18%, rgba(34,211,238,.8) 35%, rgba(244,114,182,.7) 52%, rgba(255,255,255,.08) 68%, transparent 100%);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation:borderSweep 4.8s linear infinite;
+      z-index:-1;
+      opacity:.92;
+    }
+    .btn-primary:hover,.btn-secondary:hover{transform:translateY(-1px)}
+    @keyframes borderSweep{0%{transform:translateX(-18%)}50%{transform:translateX(18%)}100%{transform:translateX(-18%)}}
+
+    .hero-grid{position:relative; min-height:700px}
+    .hero-bg-lines{position:absolute; inset:0; pointer-events:none; opacity:.38; background:
+      radial-gradient(700px 260px at 86% 18%, rgba(34,211,238,.08), transparent 65%),
+      radial-gradient(650px 250px at 84% 74%, rgba(96,165,250,.08), transparent 64%)}
+    .hero-swirl{position:absolute; inset:0; pointer-events:none; background:radial-gradient(900px 220px at 78% 76%, rgba(77,168,255,.08), transparent 70%); filter: blur(3px)}
+    .swirl-line{position:absolute; border-top:1px solid rgba(83,168,255,.14); border-radius:9999px; width:55vw; min-width:500px; height:240px; right:-6vw; bottom:9%; transform:rotate(-9deg); opacity:.42}
+    .swirl-line.two{width:60vw; height:290px; right:-3vw; bottom:6%; opacity:.26}
+    .swirl-line.three{width:46vw; height:190px; right:2vw; bottom:14%; opacity:.18}
+
+    .hero-avatar-wrap{position:relative; min-height:650px; display:flex; align-items:flex-end; justify-content:flex-end; overflow:hidden}
+    .hero-avatar{
+      position:relative;
+      width:min(40vw,620px);
+      max-width:100%;
+      height:auto;
+      object-fit:contain;
+      z-index:2;
+      filter: drop-shadow(0 35px 80px rgba(0,0,0,.40));
+      -webkit-mask-image: radial-gradient(circle at 55% 42%, rgba(0,0,0,1) 44%, rgba(0,0,0,.82) 58%, rgba(0,0,0,.4) 73%, rgba(0,0,0,0) 88%);
+      mask-image: radial-gradient(circle at 55% 42%, rgba(0,0,0,1) 44%, rgba(0,0,0,.82) 58%, rgba(0,0,0,.4) 73%, rgba(0,0,0,0) 88%);
+      opacity:.98;
+    }
+    .hero-screen{
+      position:absolute;
+      right:10%; top:16%;
+      width:min(28vw,430px);
+      height:min(20vw,270px);
+      border-radius:28px;
+      border:1px solid rgba(255,255,255,.06);
+      background:linear-gradient(180deg, rgba(12,20,43,.58), rgba(7,16,36,.22));
+      box-shadow:0 18px 55px rgba(0,0,0,.28);
+      overflow:hidden;
+      opacity:.60;
+    }
+    .hero-screen:before{
+      content:""; position:absolute; inset:0;
+      background:
+        linear-gradient(transparent 0, transparent 18%, rgba(255,255,255,.025) 18%, rgba(255,255,255,.025) 19%, transparent 19%, transparent 45%, rgba(255,255,255,.025) 45%, rgba(255,255,255,.025) 46%, transparent 46%),
+        linear-gradient(90deg, transparent 0, transparent 14%, rgba(255,255,255,.03) 14%, rgba(255,255,255,.03) 15%, transparent 15%, transparent 62%, rgba(255,255,255,.03) 62%, rgba(255,255,255,.03) 63%, transparent 63%);
+      opacity:.8;
+    }
+    .screen-card{position:absolute; border-radius:14px; border:1px solid rgba(255,255,255,.06); background:rgba(255,255,255,.03); backdrop-filter: blur(6px)}
+    .hero-logo{width:min(270px,50vw); height:auto; filter:drop-shadow(0 10px 35px rgba(34,211,238,.08))}
+    .phone-morph{position:absolute; inset:0; pointer-events:none; z-index:5; mix-blend-mode:screen; opacity:.92}
+
+    .feature-grid .card,.pricing-grid .card,.onboarding-grid .card{position:relative; overflow:hidden}
+    .feature-grid .card:before,.pricing-grid .card:before,.onboarding-grid .card:before{
+      content:"";
+      position:absolute; inset:auto -20% -60% auto;
+      width:180px; height:180px;
+      background:radial-gradient(circle, rgba(34,211,238,.15), transparent 65%);
+      filter:blur(16px);
+      pointer-events:none;
+    }
+
+    .floating-agent{position:fixed; right:18px; bottom:14px; width:min(360px, calc(100vw - 20px)); z-index:60}
+    .floating-shell{
+      position:relative; overflow:hidden; border-radius:24px;
+      border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg, rgba(15,23,48,.62), rgba(8,15,36,.72));
+      backdrop-filter: blur(12px);
+      box-shadow:0 24px 90px rgba(0,0,0,.5);
+    }
+    .floating-video{position:absolute; right:-2px; bottom:0; width:46%; max-width:190px; mix-blend-mode:screen; opacity:.98; pointer-events:none}
+    .floating-body{position:relative; padding:18px 18px 16px 18px; min-height:215px}
+    .bubble{
+      max-width:58%;
+      background:rgba(242,246,255,.88);
+      color:#19233c;
+      border-radius:16px 16px 16px 8px;
+      padding:12px 13px;
+      line-height:1.34;
+      box-shadow:0 10px 25px rgba(0,0,0,.14);
+      font-size:14px;
+    }
+    .small-link{font-size:.76rem; color:rgba(255,255,255,.68)}
+    .footer-links a{color:rgba(255,255,255,.82)}
+    .footer-links a:hover{color:white}
+
+    @media (max-width:1024px){
+      .hero-grid{min-height:auto}
+      .hero-avatar-wrap{min-height:520px}
+      .hero-screen{width:46vw;height:30vw;top:12%;right:4%}
+    }
+    @media (max-width:768px){
+      .hero-avatar-wrap{min-height:420px;margin-top:1rem}
+      .hero-avatar{width:min(88vw,540px)}
+      .hero-screen{width:68vw;height:40vw;right:6%;top:10%}
+      .floating-agent{width:min(332px, calc(100vw - 16px));right:8px;bottom:8px}
+      .bubble{max-width:60%;font-size:13px}
+      .floating-video{width:48%}
+      .swirl-line,.swirl-line.two,.swirl-line.three{width:95vw;right:-25vw}
+    }
+  </style>
 </head>
 <body>
+  <div class="hero-bg-lines"></div><div class="hero-swirl"></div><div class="swirl-line"></div><div class="swirl-line two"></div><div class="swirl-line three"></div>
 
-<header class="p-6 flex justify-between items-center border-b border-white/10">
-<div class="font-bold text-xl">KI.service</div>
-<nav class="space-x-6 text-white/70">
-<a href="#produkte">Produkte</a>
-<a href="#demo">Demo</a>
-<a href="#preise">Preise</a>
-<a href="#kontakt">Kontakt</a>
-</nav>
-</header>
+  <header class="max-w-7xl mx-auto px-6 pt-7 pb-2 relative z-20">
+    <nav class="flex items-center justify-end gap-8 text-sm text-white/80">
+      <a href="#start" class="hover:text-white">Start</a>
+      <a href="#angebot" class="hover:text-white">Angebot</a>
+      <a href="#preise" class="hover:text-white">Preise</a>
+      <a href="/ueber-uns.html" class="hover:text-white">Über uns</a>
+      <a href="#demo" class="inline-flex items-center rounded-full px-6 py-3 btn-primary font-semibold">Demo starten</a>
+    </nav>
+  </header>
 
-<section class="max-w-6xl mx-auto p-10 grid md:grid-cols-2 gap-10 items-center">
-<div>
-<h1 class="text-4xl font-semibold">KI‑Telefonagenten für Unternehmen,<br>die keinen Kundenanruf mehr verpassen.</h1>
-<p class="mt-4 text-white/70">Automatisieren Sie Hotline, Terminbuchung und Support mit Voice‑ und Wissens‑Agenten.</p>
-<div class="mt-6 space-x-3">
-<a href="#demo" class="bg-blue-600 px-5 py-3 rounded-xl">Demo starten</a>
-<a href="tel:+493075679131" class="glass px-5 py-3 rounded-xl">Telefonagent testen</a>
-</div>
-</div>
+  <main id="start" class="max-w-7xl mx-auto px-6 relative z-20">
+    <section class="hero-grid grid lg:grid-cols-[1.05fr_.95fr] gap-8 items-center pt-6 lg:pt-4">
+      <div class="pt-4 lg:pt-14">
+        <img src="/assets/logo.png" alt="KI.service Logo" class="hero-logo mb-10" />
 
-<div class="glass rounded-2xl p-4">
-<img src="assets/avatar.png" class="rounded-xl w-full">
-</div>
-</section>
+        <h1 class="display text-4xl md:text-5xl leading-[1.06] font-semibold max-w-3xl">
+          KI-Agenten für Unternehmen,
+          die sofort <span class="text-cyan-300">Kosten senken</span>
+          und Service verbessern.
+        </h1>
 
-<section id="produkte" class="max-w-6xl mx-auto p-10 grid md:grid-cols-2 gap-6">
-<div class="glass p-6 rounded-xl">
-<h3 class="text-xl font-semibold">Telefon‑Agent</h3>
-<p class="text-white/70 mt-2">Nimmt Anrufe an, beantwortet Fragen und bucht Termine.</p>
-</div>
+        <p class="mt-6 text-xl md:text-2xl text-white/82 max-w-2xl leading-snug">
+          Chat-, Voice- und Wissens-Agenten für den Mittelstand —
+          einsatzbereit in wenigen Tagen.
+        </p>
 
-<div class="glass p-6 rounded-xl">
-<h3 class="text-xl font-semibold">Wissens‑Agent</h3>
-<p class="text-white/70 mt-2">Beantwortet Kundenfragen automatisch auf Ihrer Website.</p>
-</div>
-</section>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a href="#demo" class="rounded-full px-7 py-4 btn-primary font-semibold text-lg">Demo starten</a>
+          <a href="#demo" class="rounded-full px-7 py-4 btn-secondary font-semibold text-lg">Telefonagent testen</a>
+        </div>
 
-<section id="demo" class="max-w-6xl mx-auto p-10">
-<h2 class="text-2xl font-semibold">Demo</h2>
+        <div class="mt-7 flex flex-wrap gap-6 text-base md:text-lg text-white/84">
+          <span>✓ EU-Hosting</span>
+          <span>✓ DSGVO-konform</span>
+          <span>✓ AI-Act ready</span>
+        </div>
+      </div>
 
-<div class="glass p-6 mt-4 rounded-xl">
-<p class="text-white/70">Testen Sie unseren Telefonagenten:</p>
-<div class="mt-2 text-lg font-semibold">+49 30 75679131</div>
-</div>
+      <div class="hero-avatar-wrap">
+        <div class="hero-screen">
+          <div class="screen-card" style="left:8%; top:10%; width:44%; height:17%;"></div>
+          <div class="screen-card" style="right:8%; top:12%; width:24%; height:14%;"></div>
+          <div class="screen-card" style="left:10%; top:36%; width:30%; height:10%;"></div>
+          <div class="screen-card" style="left:45%; top:36%; width:40%; height:10%;"></div>
+          <div class="screen-card" style="left:10%; bottom:12%; width:74%; height:15%;"></div>
+        </div>
 
-<div class="glass p-6 mt-6 rounded-xl">
-<h3 class="font-semibold mb-2">Video Demo</h3>
-<video controls class="w-full rounded-xl">
-<source src="assets/videos/Erfolgreicher-mit-Ki-service1.mp4" type="video/mp4">
-</video>
-</div>
-</section>
+        <img src="/assets/hero-avatar.png" alt="KI.service Hero Avatar" class="hero-avatar" />
 
-<section id="preise" class="max-w-6xl mx-auto p-10 grid md:grid-cols-3 gap-6">
-<div class="glass p-6 rounded-xl">
-<h3 class="font-semibold">Starter</h3>
-<p class="text-3xl mt-2">690€</p>
-<p class="text-white/60">149€/Monat</p>
-</div>
+        <svg id="phoneMorph" class="phone-morph" viewBox="0 0 1000 800" aria-hidden="true">
+          <defs>
+            <linearGradient id="morphLine" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#87eaff"/>
+              <stop offset="55%" stop-color="#3dd5ff"/>
+              <stop offset="100%" stop-color="#c3a7ff"/>
+            </linearGradient>
+            <filter id="mGlow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="2.5" result="blur"></feGaussianBlur>
+              <feMerge><feMergeNode in="blur"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+            </filter>
+          </defs>
+          <g id="morphLinks" stroke="url(#morphLine)" stroke-width="1.5" opacity=".62" filter="url(#mGlow)"></g>
+          <g id="morphNodes" fill="#7fe3ff" opacity=".92" filter="url(#mGlow)"></g>
+        </svg>
+      </div>
+    </section>
 
-<div class="glass p-6 rounded-xl">
-<h3 class="font-semibold">Business</h3>
-<p class="text-3xl mt-2">1490€</p>
-<p class="text-white/60">299€/Monat</p>
-</div>
+    <section id="angebot" class="pt-12 md:pt-20">
+      <h2 class="display text-3xl md:text-4xl font-semibold mb-8">Welcher KI-Agent passt zu Ihrem Unternehmen?</h2>
 
-<div class="glass p-6 rounded-xl">
-<h3 class="font-semibold">Premium</h3>
-<p class="text-3xl mt-2">2990€</p>
-<p class="text-white/60">590€/Monat</p>
-</div>
-</section>
+      <div class="feature-grid grid md:grid-cols-3 gap-6">
+        <article class="card panel rounded-[28px] p-8">
+          <div class="text-2xl font-semibold">📞 Telefon-Agent</div>
+          <ul class="mt-5 space-y-3 text-white/82 text-lg">
+            <li>✓ nimmt Anrufe an</li>
+            <li>✓ vereinbart Termine</li>
+            <li>✓ qualifiziert Leads</li>
+          </ul>
+          <div class="mt-7 flex flex-col gap-3">
+            <a href="#demo" class="inline-flex items-center justify-center rounded-full px-6 py-3 btn-primary font-semibold">Agenten live testen</a>
+            <a href="/telefon-agent.html" class="text-white/78 hover:text-white text-sm">Mehr erfahren →</a>
+          </div>
+        </article>
 
-<section id="kontakt" class="max-w-6xl mx-auto p-10">
-<h2 class="text-2xl font-semibold">Kontakt</h2>
+        <article class="card panel rounded-[28px] p-8">
+          <div class="text-2xl font-semibold">💬 Chat-Agent</div>
+          <ul class="mt-5 space-y-3 text-white/82 text-lg">
+            <li>✓ Website-Support</li>
+            <li>✓ FAQ-Automatisierung</li>
+            <li>✓ 24/7 Service</li>
+          </ul>
+          <div class="mt-7 flex flex-col gap-3">
+            <a href="#demo" class="inline-flex items-center justify-center rounded-full px-6 py-3 btn-primary font-semibold">Agenten live testen</a>
+            <a href="/chat-agent.html" class="text-white/78 hover:text-white text-sm">Mehr erfahren →</a>
+          </div>
+        </article>
 
-<form class="glass p-6 rounded-xl mt-4" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-<input class="w-full p-3 mb-3 bg-black/30 rounded" name="name" placeholder="Name">
-<input class="w-full p-3 mb-3 bg-black/30 rounded" name="email" placeholder="Email">
-<textarea class="w-full p-3 mb-3 bg-black/30 rounded" name="message" placeholder="Nachricht"></textarea>
-<button class="bg-blue-600 px-6 py-3 rounded">Absenden</button>
-</form>
+        <article class="card panel rounded-[28px] p-8">
+          <div class="text-2xl font-semibold">🧠 Wissens-Agent</div>
+          <ul class="mt-5 space-y-3 text-white/82 text-lg">
+            <li>✓ interne Dokumente</li>
+            <li>✓ FAQ-Antworten</li>
+            <li>✓ Mitarbeiter-Support</li>
+          </ul>
+          <div class="mt-7 flex flex-col gap-3">
+            <a href="#demo" class="inline-flex items-center justify-center rounded-full px-6 py-3 btn-primary font-semibold">Agenten live testen</a>
+            <a href="/wissens-agent.html" class="text-white/78 hover:text-white text-sm">Mehr erfahren →</a>
+          </div>
+        </article>
+      </div>
+    </section>
 
-</section>
+    <section id="preise" class="pt-16 md:pt-24">
+      <h2 class="display text-3xl md:text-4xl font-semibold mb-4">Transparente Preise für Telefonagenten</h2>
+      <p class="text-white/74 text-lg md:text-xl max-w-3xl">Chat-Agent und Wissens-Agent auf Anfrage. Die folgende Übersicht orientiert sich an der Telefonagenten-Logik.</p>
 
-<footer class="max-w-6xl mx-auto p-10 border-t border-white/10 text-white/60">
-<div class="font-semibold">KI.service 2026</div>
-<div class="mt-2">Ihr KI‑Service‑Partner für Implementierung von GPT‑ und Voice‑Agenten.</div>
-<div class="mt-2">kontakt@ki.services · info@ki-voice.com</div>
+      <div class="pricing-grid grid md:grid-cols-3 gap-6 mt-8">
+        <article class="card panel rounded-[28px] p-8">
+          <div class="text-cyan-300 text-3xl font-light mb-4">Solo</div>
+          <div class="text-4xl font-semibold">99 € <span class="text-2xl text-white/75">/ Monat</span></div>
+          <ul class="mt-7 space-y-3 text-[1rem] md:text-lg text-white/82">
+            <li>✓ 1000 Inbound-Minuten</li>
+            <li>✓ 0,15 € pro extra Minute</li>
+            <li>✕ Outbound Anrufe</li>
+            <li>✓ 1 Telefonnummer</li>
+            <li>✕ gleichzeitige Anrufe</li>
+            <li>✕ eigene Stimme hochladen</li>
+            <li>✕ SIP Trunk Support</li>
+            <li>✓ Kalender Integration</li>
+            <li>✓ empfohlen für 1–20 Anrufe/Tag</li>
+          </ul>
+          <a href="#kontakt" class="mt-9 inline-flex items-center justify-center rounded-full px-6 py-3 btn-primary font-semibold">Jetzt reservieren</a>
+        </article>
 
-<div class="mt-4 space-x-4">
-<a href="impressum.html">Impressum</a>
-<a href="agb.html">AGB</a>
-<a href="datenschutz.html">Datenschutz</a>
-</div>
+        <article class="card panel rounded-[28px] p-8">
+          <div class="text-3xl font-light mb-4">Team</div>
+          <div class="text-4xl font-semibold">299 € <span class="text-2xl text-white/75">/ Monat</span></div>
+          <ul class="mt-7 space-y-3 text-[1rem] md:text-lg text-white/82">
+            <li>✓ 3000 Inbound-Minuten</li>
+            <li>✓ 0,12 € pro extra Minute</li>
+            <li>✓ Outbound Anrufe</li>
+            <li>✓ 3 Telefonnummern</li>
+            <li>✓ 5 gleichzeitige Anrufe</li>
+            <li>✕ eigene Stimme hochladen</li>
+            <li>✓ SIP Trunk Support</li>
+            <li>✓ Kalender Integration</li>
+            <li>✓ empfohlen für 20–100 Anrufe/Tag</li>
+          </ul>
+          <a href="#kontakt" class="mt-9 inline-flex items-center justify-center rounded-full px-6 py-3 btn-primary font-semibold">Jetzt reservieren</a>
+        </article>
 
-<div class="mt-3">🇩🇪 EU AI Act / DSGVO</div>
-<div class="mt-2 text-sm">© 2026 ki.service · Alle Rechte vorbehalten.</div>
-</footer>
+        <article class="card panel rounded-[28px] p-8">
+          <div class="text-3xl font-light mb-4">Enterprise</div>
+          <div class="text-4xl font-semibold">ab 799 € <span class="text-2xl text-white/75">/ Monat</span></div>
+          <ul class="mt-7 space-y-3 text-[1rem] md:text-lg text-white/82">
+            <li>✓ 8000 Inbound-Minuten</li>
+            <li>✓ 0,08 € pro extra Minute</li>
+            <li>✓ Outbound Anrufe</li>
+            <li>✓ individuelle Anzahl Telefonnummern</li>
+            <li>✓ 20+ gleichzeitige Anrufe</li>
+            <li>✓ eigene Stimme hochladen</li>
+            <li>✓ SIP Trunk Support</li>
+            <li>✓ Kalender Integration</li>
+            <li>✓ empfohlen für 100+ Anrufe/Tag</li>
+          </ul>
+          <a href="#kontakt" class="mt-9 inline-flex items-center justify-center rounded-full px-6 py-3 btn-primary font-semibold">Jetzt reservieren</a>
+        </article>
+      </div>
 
+      <p class="mt-6 text-sm md:text-base text-white/62">Alle angegebenen Preise sind Nettopreise zzgl. der jeweils geltenden gesetzlichen Mehrwertsteuer.</p>
+
+      <div class="onboarding-grid grid md:grid-cols-2 gap-6 mt-10">
+        <article class="card panel rounded-[28px] p-8">
+          <div class="text-2xl font-semibold">KI Onboarding</div>
+          <div class="mt-3 text-4xl font-semibold">149 €</div>
+          <p class="mt-5 text-white/78 text-lg">KI schreibt für Sie den Prompt / die Anweisungen und Sie können quasi sofort starten.</p>
+        </article>
+        <article class="card panel rounded-[28px] p-8">
+          <div class="text-2xl font-semibold">Persönliches Onboarding</div>
+          <div class="mt-3 text-4xl font-semibold">2000 €</div>
+          <p class="mt-5 text-white/78 text-lg">Ein Experte richtet Ihr Setup im persönlichen Austausch ein und begleitet die Einführung.</p>
+        </article>
+      </div>
+
+      <div class="mt-7 flex flex-wrap gap-8 text-base md:text-lg text-white/84">
+        <span>✓ Optionaler Mitschnitt</span>
+        <span>✓ Optionaler Mitschnitt</span>
+        <span>✓ Audit-Log</span>
+      </div>
+    </section>
+
+    <section id="demo" class="pt-16 md:pt-24">
+      <div class="grid lg:grid-cols-[.92fr_1.08fr] gap-8 items-start">
+        <div class="panel rounded-[28px] p-8">
+          <h2 class="display text-3xl md:text-4xl font-semibold">Jetzt live testen</h2>
+          <p class="mt-4 text-lg md:text-xl text-white/78">Starten Sie direkt einen Testanruf oder sehen Sie sich die Video-Demo an.</p>
+
+          <div class="mt-8 panel rounded-[24px] p-6">
+            <div class="text-white/70 text-lg">Testen Sie unseren Telefonagenten:</div>
+            <div class="mt-3 text-3xl font-semibold">+49 30 75679131</div>
+            <div class="mt-5 flex flex-wrap gap-3">
+              <a href="tel:+493075679131" class="rounded-full px-6 py-3 btn-primary font-semibold">Jetzt anrufen</a>
+              <button id="copyPhoneBtn" class="rounded-full px-6 py-3 btn-secondary font-semibold">Nummer kopieren</button>
+            </div>
+            <div class="mt-3 text-sm text-white/60">Am Smartphone direkt antippen. Am Desktop kann Ihr Browser eine Telefon-/VoIP-App öffnen.</div>
+          </div>
+
+          <div class="mt-6 flex flex-wrap gap-6 text-base text-white/80">
+            <span>✓ EU-Hosting</span>
+            <span>✓ DSGVO-konform</span>
+            <span>✓ Optionaler Mitschnitt</span>
+            <span>✓ Audit-Log</span>
+          </div>
+        </div>
+
+        <div class="panel rounded-[28px] p-6">
+          <div class="text-white/70 text-lg mb-4">Video-Demo</div>
+          <video controls playsinline preload="metadata" class="w-full rounded-[22px] border border-white/10">
+            <source src="/assets/videos/Erfolgreicher-mit-Ki-service1.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <section id="ueber" class="pt-16 md:pt-24 pb-28">
+      <div class="grid lg:grid-cols-[.95fr_1.05fr] gap-8">
+        <div class="panel rounded-[28px] p-8">
+          <h2 class="display text-3xl md:text-4xl font-semibold">Kontakt</h2>
+          <p class="mt-4 text-lg md:text-xl text-white/78">Schreiben Sie kurz Ihr Ziel — wir melden uns mit einem konkreten Vorschlag.</p>
+          <form class="mt-8 grid gap-4" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+            <input class="w-full rounded-2xl bg-black/25 border border-white/10 px-5 py-4 text-white placeholder:text-white/45" name="name" placeholder="Name" />
+            <input class="w-full rounded-2xl bg-black/25 border border-white/10 px-5 py-4 text-white placeholder:text-white/45" name="email" type="email" placeholder="Email" />
+            <textarea class="w-full rounded-2xl bg-black/25 border border-white/10 px-5 py-4 text-white placeholder:text-white/45 min-h-[150px]" name="message" placeholder="Nachricht"></textarea>
+            <button class="justify-self-start rounded-full px-7 py-4 btn-primary font-semibold">Absenden</button>
+          </form>
+        </div>
+
+        <div class="flex flex-col justify-end">
+          <div class="border-t border-white/10 pt-10 text-white/78">
+            <div class="text-2xl font-semibold text-white mb-3">KI.service 2026</div>
+            <p class="text-lg md:text-xl max-w-2xl">Ihr KI-Service-Partner für Implementierung von GPT- und Voice-Agenten.</p>
+            <div class="mt-5 text-lg">kontakt@ki.services · info@ki-voice.com</div>
+
+            <div class="footer-links mt-8 flex flex-wrap gap-6 text-lg">
+              <a href="/impressum.html">Impressum</a>
+              <a href="/agb.html">AGB</a>
+              <a href="/datenschutz.html">Datenschutz</a>
+              <a href="/ueber-uns.html">Über uns</a>
+            </div>
+
+            <div class="mt-7 flex flex-wrap gap-8 text-lg">
+              <span>🇩🇪 EU-Hosting</span>
+              <span>◎ DSGVO-konform</span>
+              <span>◉ Optionaler Mitschnitt</span>
+              <span>⬡ Audit-Log</span>
+            </div>
+
+            <div class="mt-7 text-base text-white/58">© 2026 ki.service · Alle Rechte vorbehalten.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="floating-agent" id="floatingAgent">
+    <div class="floating-shell">
+      <div class="floating-body">
+        <div class="bubble">Hallo, ich bin Ihr KI‑Berater.<br>Möchten Sie testen,<br>wie Telefonagenten arbeiten?</div>
+
+        <div class="mt-5 flex flex-col gap-3 max-w-[58%]">
+          <a href="#demo" class="inline-flex items-center justify-center rounded-full px-5 py-3 btn-primary font-semibold">Demo starten</a>
+          <a href="tel:+493075679131" class="inline-flex items-center justify-center rounded-full px-5 py-3 btn-secondary font-semibold">Agent anrufen</a>
+        </div>
+
+        <div class="mt-4 flex items-center gap-3 max-w-[58%]">
+          <button id="toggleSound" class="small-link">Ton an/aus</button>
+          <button id="replayVideo" class="small-link">Replay</button>
+          <button id="hideAgent" class="small-link">Schließen</button>
+        </div>
+
+        <video id="advisorVideo" class="floating-video" autoplay muted playsinline preload="auto">
+          <source src="/assets/floating-avatar.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const phoneBtn=document.getElementById('copyPhoneBtn');
+    if(phoneBtn){
+      phoneBtn.addEventListener('click', async()=>{
+        try{
+          await navigator.clipboard.writeText('+49 30 75679131');
+          const old=phoneBtn.textContent;
+          phoneBtn.textContent='Kopiert ✓';
+          setTimeout(()=>phoneBtn.textContent=old,1300)
+        }catch{
+          alert('Bitte manuell kopieren: +49 30 75679131')
+        }
+      })
+    }
+
+    const advisor=document.getElementById('advisorVideo'),toggleSound=document.getElementById('toggleSound'),replay=document.getElementById('replayVideo'),hide=document.getElementById('hideAgent'),shell=document.getElementById('floatingAgent');
+    if(toggleSound&&advisor) toggleSound.addEventListener('click',()=>{advisor.muted=!advisor.muted});
+    if(replay&&advisor) replay.addEventListener('click',()=>{advisor.currentTime=0;advisor.play()});
+    if(hide&&shell) hide.addEventListener('click',()=>{shell.style.display='none'});
+
+    (()=>{
+      const svg=document.getElementById('phoneMorph');
+      if(!svg) return;
+      const nodesG=document.getElementById('morphNodes'),linksG=document.getElementById('morphLinks');
+      const NODE_COUNT=56, LINK_COUNT=76;
+      const rand=(a,b)=>a+Math.random()*(b-a), lerp=(a,b,t)=>a+(b-a)*t, ease=t=>1-Math.pow(1-t,3);
+
+      // Netz -> Telefonhörer -> fließt in Richtung Headset/Avatar
+      const phoneTargets=[[350,342],[370,316],[400,294],[440,284],[478,288],[512,304],[540,330],[517,342],[490,334],[460,336],[432,348],[404,372],[386,402],[477,392],[520,410],[564,432],[605,458],[641,488],[668,519],[700,553],[736,582],[777,599],[818,602],[855,592],[886,568],[912,536],[892,526],[862,538],[832,556],[800,575],[768,590],[738,598],[660,516],[618,486],[575,462],[530,438],[488,420],[446,406],[388,446],[414,468],[447,481],[485,482],[520,470],[738,629],[765,644],[801,649],[836,642],[865,624],[734,460],[764,440],[795,422],[826,404],[856,388],[620,362],[640,330],[666,305],[698,290],[735,288]];
+
+      function resample(points,n){
+        const segs=[]; let total=0;
+        for(let i=0;i<points.length-1;i++){
+          const [x1,y1]=points[i],[x2,y2]=points[i+1],d=Math.hypot(x2-x1,y2-y1);
+          segs.push({x1,y1,x2,y2,d}); total+=d;
+        }
+        const step=total/(n-1), out=[points[0]]; let acc=0, si=0;
+        for(let k=1;k<n-1;k++){
+          const target=k*step;
+          while(acc+segs[si].d<target && si<segs.length-1){acc+=segs[si].d; si++}
+          const s=segs[si], t=(target-acc)/s.d;
+          out.push([lerp(s.x1,s.x2,t), lerp(s.y1,s.y2,t)]);
+        }
+        out.push(points[points.length-1]);
+        return out;
+      }
+
+      const targets=resample(phoneTargets,NODE_COUNT);
+      const start=Array.from({length:NODE_COUNT},()=>({x:rand(520,930),y:rand(120,690),r:rand(1.7,3.2)}));
+      const circles=start.map(p=>{const c=document.createElementNS('http://www.w3.org/2000/svg','circle'); c.setAttribute('cx',p.x); c.setAttribute('cy',p.y); c.setAttribute('r',p.r); nodesG.appendChild(c); return c});
+      const links=Array.from({length:LINK_COUNT},()=>{const a=Math.floor(Math.random()*NODE_COUNT); let b=Math.floor(Math.random()*NODE_COUNT); if(b===a) b=(b+5)%NODE_COUNT; const l=document.createElementNS('http://www.w3.org/2000/svg','line'); l.dataset.a=a; l.dataset.b=b; linksG.appendChild(l); return l});
+      const driftPhase=start.map(()=>({dx:rand(-.5,.5),dy:rand(-.4,.4)}));
+      const DURATION=2800, HOLD=1400, t0=performance.now();
+
+      function updateLinks(){
+        for(const l of links){
+          const a=+l.dataset.a,b=+l.dataset.b;
+          l.setAttribute('x1',start[a].cx??start[a].x);
+          l.setAttribute('y1',start[a].cy??start[a].y);
+          l.setAttribute('x2',start[b].cx??start[b].x);
+          l.setAttribute('y2',start[b].cy??start[b].y);
+        }
+      }
+
+      function animate(now){
+        const elapsed=now-t0;
+        if(elapsed<=DURATION){
+          const t=ease(elapsed/DURATION);
+          for(let i=0;i<NODE_COUNT;i++){
+            const x=lerp(start[i].x,targets[i][0],t), y=lerp(start[i].y,targets[i][1],t);
+            start[i].cx=x; start[i].cy=y;
+            circles[i].setAttribute('cx',x); circles[i].setAttribute('cy',y);
+            circles[i].setAttribute('r',lerp(start[i].r,start[i].r*1.18,t));
+          }
+          updateLinks(); requestAnimationFrame(animate); return;
+        }
+        if(elapsed<=DURATION+HOLD){ updateLinks(); requestAnimationFrame(animate); return; }
+        for(let i=0;i<NODE_COUNT;i++){
+          const x=(start[i].cx??targets[i][0])+driftPhase[i].dx*.16,
+                y=(start[i].cy??targets[i][1])+driftPhase[i].dy*.14;
+          start[i].cx=x; start[i].cy=y;
+          circles[i].setAttribute('cx',x); circles[i].setAttribute('cy',y);
+        }
+        updateLinks(); requestAnimationFrame(animate);
+      }
+      requestAnimationFrame(animate)
+    })();
+  </script>
 </body>
 </html>
